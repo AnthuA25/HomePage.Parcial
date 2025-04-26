@@ -19,7 +19,7 @@ function PropertyCardComponent({ home, goBack }) {
         <p><strong>Habitaciones:</strong> {home.habitaciones}</p>
         <p><strong>Baños:</strong> {home.baños}</p>
         {!showMap ? (
-          <a href="#" onClick={toggleMap}>Ver en Google Maps</a>
+          <a href="#" className="map" onClick={toggleMap}>Ver en Google Maps</a>
         ) : (
           <iframe
             width="100%"

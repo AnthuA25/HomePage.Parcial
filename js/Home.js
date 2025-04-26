@@ -37,6 +37,8 @@ const HomeListComponent = ({ homesData, onHomeClick }) => (
                 precio_actual={card.precio_actual}
                 categoria={card.categoria}
                 precio_anterior={card.precio_anterior}
+                latitud={card.latitud}
+                longitud={card.longitud}
                 key={index}
                 onHomeClick={onHomeClick}
             />
