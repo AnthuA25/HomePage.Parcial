@@ -1,5 +1,5 @@
-const HomeComponent = ({ nombre, imagen, ciudad, area, categoria, habitaciones, baños, precio_actual, parqueaderos, precio_anterior, onHomeClick }) => {
-    const home = { nombre, imagen, ciudad, area, habitaciones, baños, precio_actual, precio_anterior };
+const HomeComponent = ({ nombre, imagen, ciudad, area, categoria,latitud,longitud, habitaciones, baños, precio_actual, parqueaderos, precio_anterior, onHomeClick }) => {
+    const home = { nombre, imagen, ciudad, area, habitaciones, baños, precio_actual, precio_anterior,categoria,latitud,longitud };
     return (
         <div className="card" data-category={categoria} onClick={() => onHomeClick(home)}>
             <img src={imagen} />
