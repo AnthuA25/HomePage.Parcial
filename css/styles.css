@@ -27,6 +27,7 @@
 .titleHome{
     font-size: 1.5rem;
     padding: 0 2px 0 0;
+    text-align: center;
 }
 .name{
     padding: 20px 0 20px 0;
@@ -107,4 +108,15 @@
     padding: 5px;
     width: 100%;
     color: white;
+}
+
+
+/*Details*/
+.home-detail{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 2px solid red;
 }
