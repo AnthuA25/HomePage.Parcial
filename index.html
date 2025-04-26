@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="navbarcomponent"></div>
+        <h2 class="titleHome">Catálogo de Casas</h2>
+        <aside class="sidebar">
+            <select id="categoryFilter">
+                <option value="all">Todos</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Casa">Casa</option>
+                <option value="Lote">Lote</option>
+            </select>
+            <select id="orderFilter">
+                <option value="">Ordenar Por</option>
+                <option value="ascendente">A-Z</option>
+                <option value="descendente">Z-A</option>
+            </select>
+
+        </aside>
+
+        <div id="homelistcomponent"></div>
+    </div>
+    <script type="text/babel" src="js/App.js"></script>
+
+    <script type="text/babel" src="js/Home.js"></script>
+    <script type="text/babel" src="js/PropertyCard.js"></script>
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    homesData: [],
+                    selectedCategory: "all",
+                    selectedHome: null,
+                    orderBy: "ascendente",
+                };
+            }
+
+            componentDidMount() {
+                fetch("data/homeData.json")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                        this.setState({ homesData: data });
+                    })
+                    .catch((error) => console.error("hay un error", error));
+
+                const filter = document.getElementById("categoryFilter");
+                filter.addEventListener("change", (e) => {
+                    console.log(e.target.value)
+                    this.setState({ selectedCategory: e.target.value });
+                });
+
+                const orderFilter = document.getElementById("orderFilter");
+                orderFilter.addEventListener("change", (e) => {
+                    console.log("Orden seleccionado:", e.target.value);
+                    this.setState({ orderBy: e.target.value });
+                });
+            }
+
+            handleHomeClick = (home) => {
+                this.setState({ selectedHome: home });
+            };
+
+            goBack = () => {
+                this.setState({ selectedHome: null });
+            };
+
+            render() {
+                const { homesData, selectedCategory, selectedHome, orderBy } = this.state;
+                if (selectedHome) {
+                    return (
+                        <PropertyCardComponent
+                            home={selectedHome}
+                            goBack={this.goBack}
+                        />
+                    );
+                }
+
+                // Filtrado por categoría
+                const filteredHome =
+                    selectedCategory === "all"
+                        ? homesData
+                        : homesData.filter((home) =>
+                            home.categoria === selectedCategory
+                        );
+                filteredHome.sort((a, b) => {
+                    const nameA = a.nombre.toLowerCase();
+                    const nameB = b.nombre.toLowerCase();
+
+                    if (orderBy === "ascendente") {
+                        return nameA.localeCompare(nameB);
+                    } else if (orderBy === "descendente") {
+                        return nameB.localeCompare(nameA);
+                    } else {
+                        return 0;
+                    }
+                });
+
+                return (
+                    <HomeListComponent
+                        homesData={filteredHome}
+                        onHomeClick={this.handleHomeClick}
+                    />
+                );
+            }
+
+        }
+        ReactDOM.render(<App />, document.getElementById("homelistcomponent"));
+    </script>
+</body>
